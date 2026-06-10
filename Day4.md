@@ -1,1 +1,238 @@
 # Day 4 - Introduction to SOFA FPGA Fabric
+## Overview
+
+Day 4 focused on exploring the **SOFA FPGA Fabric** using the **OpenFPGA Framework**. The complete implementation flow included FPGA fabric generation, placement and routing, timing analysis, power analysis, and post-synthesis verification.
+
+### Activities Performed
+
+* OpenFPGA Flow Execution
+* FPGA Fabric Generation
+* VTR-Based Implementation Flow
+* Placement and Routing
+* Timing Analysis
+* Power Analysis
+* Post-Synthesis Simulation
+
+The design used for experimentation was a **4-bit Up Counter**.
+
+---
+
+# Introduction to SOFA FPGA Fabric
+
+**SOFA (Skywater Open-source FPGAs)** is an open-source FPGA platform built using the **SkyWater 130nm PDK**, **OpenFPGA**, and **VTR** frameworks.
+
+## Target Architecture
+
+* FPGA1212_QLSOFA_HD_PNR
+* Maximum Frequency: 50 MHz
+* 1152 LUTs
+* 2304 Flip-Flops
+* 1152 Soft Adders
+
+---
+
+# OpenFPGA Flow Execution
+
+The OpenFPGA framework was used to generate the FPGA fabric and implement the counter design on the custom FPGA architecture.
+
+## Command Used
+
+```bash
+make runOpenFPGA
+```
+---
+
+# Counter Design Used
+
+A 4-bit up counter was used as the benchmark design for implementation and analysis on the SOFA FPGA fabric.
+
+## Counter Verilog Code
+
+```verilog
+/*Important: Once you run ./a.out, it will keep running infinitely,
+because it is in an always block.
+You need to hit Ctrl+Z to stop it,
+else, the vcd will become a large file and will never end.
+*/
+
+module up_counter (
+    out ,      // Output of the counter
+    enable ,   // enable for counter
+    clk ,      // clock Input
+    reset      // reset Input
+);
+
+output [3:0] out;
+
+//you can alternately write this as output reg [7:0] out;
+
+input enable, clk, reset;
+
+//----------Internal Variables--------------
+
+reg [3:0] out;
+
+always @(posedge clk)
+
+if (reset) begin
+    out = 4'b0 ;
+end
+
+else if (enable) begin
+    out = out + 1;
+end
+
+endmodule
+```
+
+---
+
+# Counter Area Report
+
+The area report was analyzed to evaluate the FPGA resources utilized by the counter design after implementation on the SOFA FPGA fabric.
+
+## Metrics Analyzed
+
+* LUT Utilization
+* Flip-Flop Usage
+* Resource Occupancy
+* FPGA Fabric Mapping
+
+The report provides an overview of the hardware resources required to implement the design on the target FPGA architecture.
+
+## Area Report
+
+Area utilization report showing FPGA resource consumption of the counter design on the SOFA FPGA fabric.
+
+<img width="558" height="287" alt="image" src="https://github.com/user-attachments/assets/0c28a772-c1bd-48fe-9ced-b7d1ddfb4d41" />
+
+---
+Logical elements implemented from vpr_stdout.log
+
+<img width="337" height="283" alt="image" src="https://github.com/user-attachments/assets/a0944ec3-ac97-4930-9619-50f20204e4cb" />
+
+---
+
+# Constraint File
+
+The timing constraints were provided using an `.sdc` file.
+
+## Example Constraint File
+
+```tcl
+create_clock -period 10 up_counter_clk
+
+set_input_delay  -clock up_counter_clk -max 0 [get_ports {*}]
+
+set_output_delay -clock up_counter_clk -max 0 [get_ports {*}]
+```
+
+---
+
+# Modifying VPR Command
+
+The VPR command was updated to include timing constraints through an SDC file, enabling setup and hold timing analysis during implementation.
+
+## Updated VPR Command
+<img width="752" height="187" alt="image" src="https://github.com/user-attachments/assets/73c7652c-3bc6-4c16-992d-876389cdcc37" />
+
+---
+
+# Post-Synthesis Simulation
+
+Post-synthesis simulation was performed using the synthesized netlist and generated timing information to verify the functionality of the implemented design.
+
+## Generated Files
+
+* `.blif` – Synthesized Netlist
+* `.net` – Packed Netlist
+* `.place` – Placement Information
+* `.route` – Routing Information
+* `.sdf` – Timing Delay Data
+* Post-Synthesis Verilog Netlist
+
+The simulation verified that the synthesized design operated correctly after FPGA mapping and implementation.
+
+## Post-Synthesis Simulation Output
+
+<img width="1270" height="190" alt="image" src="https://github.com/user-attachments/assets/8a1a924e-5808-4d9b-8d27-140d43f79d6b" />
+
+
+---
+
+# Timing Violation Analysis
+
+Initial implementation results showed setup timing violations due to the absence of timing constraints.
+
+After applying the appropriate SDC constraints, the design successfully met the required timing specifications.
+
+## Results
+
+* Setup Timing Satisfied
+* Hold Timing Satisfied
+* Positive Timing Slack
+* Successful Timing Closure
+
+The updated timing reports confirmed reliable operation of the design within the specified clock constraints.
+
+## Setup Timing Report
+
+<img width="478" height="315" alt="image" src="https://github.com/user-attachments/assets/f61a0e62-290d-4a2b-863f-3cbdbbef59a2" />
+
+## Hold Timing Report
+
+<img width="512" height="297" alt="image" src="https://github.com/user-attachments/assets/fdcbbbf5-4d66-4fb4-a755-f17db011787d" />
+
+---
+
+# Power Analysis
+
+Power analysis was performed using the reports generated by the VTR and OpenFPGA implementation flow to evaluate the power consumption of the counter design.
+
+## Metrics Analyzed
+
+* Dynamic Power
+* Static Power
+* Clock Power
+* Logic Power
+* Signal Power
+
+The power report provides insight into the energy consumption of the implemented design and helps assess its efficiency on the target FPGA fabric.
+
+## Power Report
+
+<img width="1051" height="599" alt="image" src="https://github.com/user-attachments/assets/dcf91cb2-abc8-4b74-abe1-f613da16c1c2" />
+
+---
+
+
+# Important Files Generated
+
+The OpenFPGA implementation flow generated several files used for design analysis and verification.
+
+| File                       | Description                      |
+| -------------------------- | -------------------------------- |
+| `counter.blif`             | Synthesized BLIF netlist         |
+| `counter.net`              | Netlist connectivity information |
+| `counter.place`            | Placement report                 |
+| `counter.route`            | Routing report                   |
+| `counter.sdf`              | Timing delay information         |
+| `counter_post_synthesis.v` | Post-synthesis Verilog netlist   |
+| `report_timing.setup.rpt`  | Setup timing report              |
+| `report_timing.hold.rpt`   | Hold timing report               |
+| `vpr_stdout.log`           | VPR execution log                |
+| `power.rpt`                | Power analysis report            |
+
+---
+
+# Key Learnings
+
+* Understanding SOFA FPGA Architecture
+* Exploring the OpenFPGA Design Flow
+* FPGA Fabric Generation and Mapping
+* Timing Analysis and Timing Closure
+* Setup and Hold Timing Verification
+* Applying Timing Constraints using SDC
+* Post-Synthesis Simulation
+* FPGA Power Analysis
+* Analysis of Generated Implementation Reports
