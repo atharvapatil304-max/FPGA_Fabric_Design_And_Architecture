@@ -171,4 +171,38 @@ The following tools were used throughout the workshop to implement, analyze, and
 * Processor Implementation on FPGA
 
 ---
+
 # References
+
+## VLSI System Design
+https://www.vlsisystemdesign.com/ip/
+
+## RISC-V Based Microprocessor
+https://github.com/shivanishah269/risc-v-core
+
+## 4-stage RISC-V Core
+https://github.com/ShonTaware/RISC-V_Core_4_Stage
+
+## SOFA FPGA Framework
+https://github.com/lnis-uofu/SOFA
+
+## OpenFPGA Documentation
+https://openfpga.readthedocs.io/en/master/
+
+## VPR Documentation
+https://docs.verilogtorouting.org/en/latest/vpr/
+
+## VTR Documentation
+https://docs.verilogtorouting.org/en/latest/
+
+---
+
+# Acknowledgement
+
+This work was carried out as part of the **FPGA Fabric Design and Architecture Workshop** conducted by **VSD Corp Pvt. Ltd.**
+
+I would like to thank **Kunal Ghosh** and the workshop team for providing the learning platform, guidance, and resources that enabled the exploration of FPGA architectures, OpenFPGA, VTR, VPR, and FPGA implementation flows.
+
+The repository serves as a record of the concepts studied, experiments performed, and results obtained throughout the workshop.
+
+---
