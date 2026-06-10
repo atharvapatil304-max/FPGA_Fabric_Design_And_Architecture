@@ -1,5 +1,3 @@
-![Verilog](https://img.shields.io/badge/Verilog-8A2BE2?style=for-the-badge)
-
 # FPGA_Fabric_Design_And_Architecture
 
 This repository presents a comprehensive study of FPGA design methodologies, implementation workflows, architectural exploration, and performance evaluation carried out during the FPGA Fabric Design and Architecture workshop.
