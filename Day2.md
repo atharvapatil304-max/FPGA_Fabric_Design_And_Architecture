@@ -625,4 +625,3 @@ $VTR_ROOT/vtr_flow/arch/timing/EArch.xml \
 counter.pre-vpr.blif \
 --gen_post_synthesis_netlist on
 ```
----
